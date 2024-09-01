@@ -66,15 +66,15 @@
 
 
         <SpringProfile name="!development, !production">
-            <Logger name="com.proj" level="trace" />
+            <Logger name="com.url" level="trace" />
         </SpringProfile>
 
         <SpringProfile name="development">
-            <Logger name="com.proj.extensions" level="info" />
+            <Logger name="com.url.extensions" level="info" />
         </SpringProfile>
 
         <SpringProfile name="production">
-            <Logger name="com.proj.extensions" level="info">
+            <Logger name="com.url.extensions" level="info">
                 <AppenderRef ref="Console-Extensions" />
             </Logger>
         </SpringProfile>
