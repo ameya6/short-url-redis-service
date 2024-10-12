@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@RedisHash("short_url")
+@RedisHash(value = "short_url", timeToLive = 86400 * 30)
 public class ShortURL {
     @Id
     private UUID id;

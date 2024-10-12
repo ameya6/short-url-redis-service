@@ -1,84 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<Configuration status="warn" name="MyApp" packages="">
+<Configuration>
     <Properties>
-        <Property name="log-path">logs</Property>
+        <Property name="logPath">logs/elk-example/</Property>
+        <Property name="rollingFileName">elk-example_app</Property>
+        <Property name="defaultPattern"> %d{ISO8601} %-5level ${spring:spring.application.name} ${sys:hostName} ${sys:hostAddress} %t %c{1}.%M().%L - %msg%n%throwable{short.lineNumber}</Property>
+        <!--<Property name="logStashPattern">[%d{ISO8601}][%-5p][%-25c]%notEmpty{[%X{pipeline.id}]}%notEmpty{[%X{plugin.id}]} %m%n]</Property>-->
     </Properties>
     <Appenders>
-        <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} : [%L] - %msg%n" />
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${defaultPattern}" />
         </Console>
-        <RollingFile name="ROLLINGFILE" fileName="${log-path}/myexample.log" filePattern="${log-path}/myexample-%d{yyyy-MM-dd}-%i.log" >
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} %t %-5level %logger{36} : [%L] - %msg%n" />
+        <!--<RollingFile name="rollingFile" fileName="${logPath}/${rollingFileName}.log" filePattern="${logPath}/${rollingFileName}_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${defaultPattern}" />
             <Policies>
-                <SizeBasedTriggeringPolicy size="10 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="100"/>
-        </RollingFile>
-    </Appenders>
-    <Loggers>
-        <Root level="info">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="ROLLINGFILE"/>
-        </Root>
-    </Loggers>
-</Configuration>-->
-<Configuration>
-
-    <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout
-                    pattern="%style{%d{ISO8601}}{white} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
-        </Console>
-
-        <Console name="Console-Extensions" target="SYSTEM_OUT">
-            <PatternLayout
-                    pattern="%d %p %c{1.} [%t] ${spring:spring.application.name} %m%n" />
-        </Console>
-
-        <RollingFile name="RollingFile"
-                     fileName="./logs/spring-boot-logger-log4j2.log"
-                     filePattern="./logs/$${date:yyyy-MM}/spring-boot-logger-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
-            <PatternLayout>
-                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <!-- rollover on startup, daily and when the file reaches
-                    10 MegaBytes -->
                 <OnStartupTriggeringPolicy />
-                <SizeBasedTriggeringPolicy
-                        size="10 MB" />
-                <TimeBasedTriggeringPolicy />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
-        </RollingFile>
-
-        <Syslog name="Syslog" format="RFC5424" host="localhost" port="514"
-                protocol="UDP" appName="sb-init" facility="LOCAL0" />
-
+        </RollingFile>-->
+        <!--<Socket name="socket" host="192.168.0.206" port="9999" reconnectionDelayMillis="5000">
+            <PatternLayout pattern="${defaultPattern}" />
+        </Socket>-->
     </Appenders>
-
     <Loggers>
-        <!-- LOG everything at INFO level -->
         <Root level="info">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="RollingFile" />
-            <AppenderRef ref="Syslog" />
+            <AppenderRef ref="console" />
+            <!--<AppenderRef ref="rollingFile"/>-->
+            <!--<AppenderRef ref="socket"/>-->
         </Root>
-
-
-        <SpringProfile name="!development, !production">
-            <Logger name="com.url" level="trace" />
-        </SpringProfile>
-
-        <SpringProfile name="development">
-            <Logger name="com.url.extensions" level="info" />
-        </SpringProfile>
-
-        <SpringProfile name="production">
-            <Logger name="com.url.extensions" level="info">
-                <AppenderRef ref="Console-Extensions" />
-            </Logger>
-        </SpringProfile>
-
     </Loggers>
-
 </Configuration>

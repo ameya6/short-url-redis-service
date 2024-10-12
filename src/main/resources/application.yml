@@ -1,8 +1,37 @@
 server:
-  port: 10006
+  servlet:
+    context-path: /short-url-redis-service
+  port: 10003
 
 spring:
+  threads:
+    virtual:
+      enabled: true
+  application:
+    name: short-url-redis-service
+  data:
+    redis:
+      host: ${REDIS.SERVER.URL}
+      port: ${REDIS.SERVER.PORT}
+
+---
+
+server:
+  servlet:
+    context-path: /short-url-redis-service
+  port: 10003
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  threads:
+    virtual:
+      enabled: true
+  application:
+    name: short-url-redis-service
   data:
     redis:
       host: 192.168.0.206
       port: 6379
+
